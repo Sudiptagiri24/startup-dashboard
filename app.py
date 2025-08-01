@@ -49,47 +49,67 @@ def load_investor_details(investor):
     st.title(investor)
     investor_df = df[df['investors'].str.contains(investor, na=False)]
 
+    if investor_df.empty:
+        st.warning("No data found for the selected investor.")
+        return
+
+    last5_df = investor_df[['date', 'startup', 'vertical', 'city', 'round', 'amount']].head()
     st.subheader('Most Recent Investments')
-    st.dataframe(investor_df[['date', 'startup', 'vertical', 'city', 'round', 'amount']].sort_values(by='date',
-                                                                                                     ascending=False).head())
+    st.dataframe(last5_df)
 
     col1, col2 = st.columns(2)
-
     with col1:
         big_series = investor_df.groupby('startup')['amount'].sum().sort_values(ascending=False).head()
         st.subheader('Biggest Investments')
-        fig, ax = plt.subplots()
-        ax.bar(big_series.index, big_series.values)
-        plt.xticks(rotation='vertical')
-        st.pyplot(fig)
+        if not big_series.empty:
+            fig, ax = plt.subplots()
+            ax.bar(big_series.index, big_series.values)
+            st.pyplot(fig)
+        else:
+            st.info("No big investments to show.")
 
     with col2:
         vertical_series = investor_df.groupby('vertical')['amount'].sum()
-        st.subheader('Sectors Invested In')
-        fig1, ax1 = plt.subplots()
-        ax1.pie(vertical_series, labels=vertical_series.index, autopct="%0.01f%%")
-        st.pyplot(fig1)
+        st.subheader('Sectors Invested in')
+        if not vertical_series.empty:
+            fig1, ax1 = plt.subplots()
+            ax1.pie(vertical_series, labels=vertical_series.index, autopct="%0.01f%%")
+            st.pyplot(fig1)
+        else:
+            st.info("No sector data available.")
 
     col3, col4 = st.columns(2)
     with col3:
         round_series = investor_df.groupby('round')['amount'].sum()
         st.subheader('Rounds')
-        fig2, ax2 = plt.subplots()
-        ax2.pie(round_series, labels=round_series.index, autopct="%0.01f%%")
-        st.pyplot(fig2)
+        if not round_series.empty:
+            fig2, ax2 = plt.subplots()
+            ax2.pie(round_series, labels=round_series.index)
+            st.pyplot(fig2)
+        else:
+            st.info("No round data available.")
 
     with col4:
         city_series = investor_df.groupby('city')['amount'].sum()
-        st.subheader('Cities')
-        fig3, ax3 = plt.subplots()
-        ax3.pie(city_series, labels=city_series.index, autopct="%0.01f%%")
-        st.pyplot(fig3)
+        st.subheader('City')
+        if not city_series.empty:
+            fig3, ax3 = plt.subplots()
+            ax3.pie(city_series, labels=city_series.index)
+            st.pyplot(fig3)
+        else:
+            st.info("No city data available.")
 
-    st.subheader('YoY Investment')
-    year_series = investor_df.groupby('year')['amount'].sum()
-    fig4, ax4 = plt.subplots()
-    ax4.plot(year_series.index, year_series.values)
-    st.pyplot(fig4)
+    col5, col6 = st.columns(2)
+    with col5:
+        year_series = investor_df.groupby('year')['amount'].sum()
+        st.subheader('YoY Investment')
+        if not year_series.empty:
+            fig4, ax4 = plt.subplots()
+            ax4.plot(year_series.index, year_series.values)
+            st.pyplot(fig4)
+        else:
+            st.info("No yearly investment data.")
+
 
 
 # Sidebar UI
