@@ -14,11 +14,19 @@ df['year'] = df['date'].dt.year
 # Utility function to set custom styles
 st.markdown("""
     <style>
-        .main {background-color: #f8f9fa;}
-        h1, h2, h3 {color: #0a4275;}
-        .stMetric {background-color: #ffffff; border-radius: 8px; padding: 10px;}
+        .main {background-color: #0e1117;}
+        h1, h2, h3, .stMarkdown h5 {color: #cccccc;}
     </style>
 """, unsafe_allow_html=True)
+
+# Custom metric card styling
+def styled_metric(title, value, icon=""):
+    st.markdown(f"""
+        <div style="background-color:#1f1f1f;padding:20px;border-radius:12px;text-align:center;box-shadow:0 0 10px #000;">
+            <h5 style="color:#cccccc;margin-bottom:10px;">{icon} {title}</h5>
+            <h2 style="color:#ffffff;margin:0;">{value}</h2>
+        </div>
+    """, unsafe_allow_html=True)
 
 def load_overall_analysis():
     st.title('📈 Overall Startup Funding Analysis')
@@ -30,13 +38,13 @@ def load_overall_analysis():
     total_startup = df['startup'].nunique()
 
     with col1:
-        st.metric('💰 Total Funding', f'{total} Cr')
+        styled_metric('Total Funding', f'{total} Cr', '💰')
     with col2:
-        st.metric('🚀 Max Single Investment', f'{max_funding} Cr')
+        styled_metric('Max Single Investment', f'{max_funding} Cr', '🚀')
     with col3:
-        st.metric('📊 Avg Investment per Startup', f'{avg_funding} Cr')
+        styled_metric('Avg Investment per Startup', f'{avg_funding} Cr', '📊')
     with col4:
-        st.metric('🏢 Total Funded Startups', f'{total_startup}')
+        styled_metric('Total Funded Startups', f'{total_startup}', '🏢')
 
     st.markdown("---")
     st.subheader('🗓️ Month-on-Month Funding Trend')
