@@ -12,7 +12,7 @@ An interactive Streamlit dashboard that visualizes startup funding trends in Ind
   View total, maximum, and average investments, along with funded startup count and a month-over-month funding trend graph.
 
 - **Investor Analysis:**  
-  Get detailed insights on any investor — their biggest investments, sectors of interest, cities, rounds, and year-wise trends.
+  Get detailed insights on any investor - their biggest investments, sectors of interest, cities, rounds, and year-wise trends.
 
 - **StartUp Mode:** *(Coming soon or under development)*  
   Placeholder for startup-specific deep-dive.
